@@ -1,13 +1,13 @@
 require_relative "../main"
 
 class TimpulParser
-  PAGES_DIR       = "data/pages/timpul/"
+  attr_accessor :page_dir, :parsed_data
 
   def latest_stored_id
-    @latest_stored_id = Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
-                        .map(&:to_i)
-                        .sort
-                        .last || 0
+    @latest_stored_id = Dir["#{page_dir}*"].map{ |f| f.split('.').first.gsub(page_dir, "") }
+                          .map(&:to_i)
+                          .sort
+                          .last || 0
   end
 
   def latest_parsed_id
@@ -17,7 +17,7 @@ class TimpulParser
   end
 
   def load_doc(id)
-    Zlib::GzipReader.open("#{PAGES_DIR}#{id}.html.gz") {|gz| gz.read }
+    Zlib::GzipReader.open("#{page_dir}#{id}.html.gz") {|gz| gz.read }
   end
 
   def parse_timestring(timestring)
@@ -69,15 +69,15 @@ class TimpulParser
     end
 
     {
-      source:         "timpul",
-      title:          title,
-      original_time:  timestring,
-      datetime:       parse_timestring(timestring),
-      views:          0, # No data
-      comments:       0, # Disqus iframe
-      content:        content,
-      article_id:     id.to_i,
-      url:            build_url(id)
+        source:         "timpul",
+        title:          title,
+        original_time:  timestring,
+        datetime:       parse_timestring(timestring),
+        views:          0, # No data
+        comments:       0, # Disqus iframe
+        content:        content,
+        article_id:     id.to_i,
+        url:            build_url(id)
     }
   end
 
@@ -92,6 +92,8 @@ class TimpulParser
   end
 
   def run
+    @page_dir  = "data/pages/timpul/"
+
     (latest_parsed_id+1..latest_stored_id).to_a.each do |id|
       begin
         puts "\nTimpul: #{progress(id)}"

@@ -1,10 +1,10 @@
 require_relative "../main"
 
 class UnimediaParser
-  PAGES_DIR       = "data/pages/unimedia/"
+  attr_accessor :page_dir, :parsed_data
 
   def latest_stored_id
-    @latest_stored_id = Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
+    @latest_stored_id = Dir["#{@page_dir}*"].map{ |f| f.split('.').first.gsub(@page_dir, "") }
                         .map(&:to_i)
                         .sort
                         .last || 0
@@ -17,7 +17,7 @@ class UnimediaParser
   end
 
   def load_doc(id)
-    Zlib::GzipReader.open("#{PAGES_DIR}#{id}.html.gz") {|gz| gz.read }
+    Zlib::GzipReader.open("#{@page_dir}#{id}.html.gz") {|gz| gz.read }
   end
 
   def parse_timestring(timestring)
@@ -44,7 +44,7 @@ class UnimediaParser
     timestring, views, comments = doc.css('.left-container > .news-details > .white-v-separator').map(&:text)
     content = doc.css('.news-text').text.gsub(/\r|\n/, ' ').squeeze(' ')
 
-    result = {
+    {
       source:         "unimedia",
       title:          title,
       original_time:  timestring,
@@ -71,6 +71,8 @@ class UnimediaParser
   end
 
   def run
+    @page_dir = "data/pages/unimedia/"
+
     (latest_parsed_id..latest_stored_id).to_a.each do |id|
       begin
         puts "\nUnimedia: #{progress(id)}"

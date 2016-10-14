@@ -1,4 +1,6 @@
 data/*
 db/articles.sqlite
-
+.idea
+*iml
 .DS_Store
+spec/cassettes

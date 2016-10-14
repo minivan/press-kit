@@ -1,30 +1,28 @@
 require_relative "../main"
 
-class TimpulFetcher
-  PAGES_DIR = "data/pages/timpul/"
-  MAIN_PAGE = "http://www.timpul.md/"
+class ProTvFetcher
+  PAGES_DIR  = "data/pages/protv/"
+  MAIN_PAGE = "http://protv.md"
+  LATEST_NEWS = "http://protv.md/export/featured/json"
 
   def setup
     FileUtils.mkdir_p PAGES_DIR
   end
 
   def most_recent_id
-    return @most_recent_id if @most_recent_id
-    doc = Nokogiri::HTML.parse(RestClient.get(MAIN_PAGE))
-    hrefs = doc.css("a").map { |link| link["href"] }.compact
-    possible_ids = hrefs.map { |href| href.scan(/-([\d]+)\.html/)[0] }.compact
-    @most_recent_id = possible_ids.map { |id| id.first.to_i }.max
+    resp = JSON.parse(RestClient.get(LATEST_NEWS))
+    resp[0]["id"].to_i
   end
 
   def latest_stored_id
-    Dir["#{PAGES_DIR}*"].map { |f| f.split('.').first.gsub(PAGES_DIR, "") }
+    Dir["#{PAGES_DIR}*"].map{ |f| f.split('.').first.gsub(PAGES_DIR, "") }
         .map(&:to_i)
         .sort
-        .last || 0
+        .last || 1
   end
 
   def link(id)
-    "http://www.timpul.md/u_#{id}/"
+    "#{MAIN_PAGE}/stiri/actualitate/---#{id}.html"
   end
 
   def save(page, id)
@@ -40,9 +38,10 @@ class TimpulFetcher
 
   def valid? page
     return unless page
+
     doc = Nokogiri::HTML(page, nil, 'UTF-8')
-    return false if doc.title == "Timpul - Ştiri din Moldova"
-    return false unless doc.css('.content').size > 0
+
+    return unless doc.at_css('//h1[@itemprop="name headline"]')
 
     true
   end
@@ -53,14 +52,14 @@ class TimpulFetcher
 
   def run
     setup
-    puts "Fetching Timpul. Most recent: #{most_recent_id}. Last fetched: #{latest_stored_id}."
+    puts "Fetching Protv. Most recent: #{most_recent_id}. Last fetched: #{latest_stored_id}."
 
     if latest_stored_id == most_recent_id
       puts "Nothing to fetch for Timpul"
       return
     end
 
-    latest_stored_id.upto(most_recent_id) do |id|
+    (latest_stored_id..most_recent_id).step(10) do |id|
       fetch_single(id)
       progressbar.increment!
     end

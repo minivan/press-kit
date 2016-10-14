@@ -6,8 +6,9 @@ require 'json'
 require 'i18n'
 require 'mongoid'
 require 'savon'
+require_relative 'lib/config/database'
 
-Mongoid.load!("mongoid.yml", :development)
+Config::Database.setup
 
 require_relative "lib/person"
 require_relative "lib/smart_fetcher"
@@ -20,6 +21,8 @@ require_relative "analyzer"
 require_relative "fetchers/timpul"
 require_relative "fetchers/unimedia"
 require_relative "fetchers/publika"
+require_relative "fetchers/pro_tv"
 
 require_relative "parsers/timpul"
 require_relative "parsers/unimedia"
+require_relative "parsers/publika"
