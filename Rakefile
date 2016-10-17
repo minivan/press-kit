@@ -1,5 +1,9 @@
 require_relative "./main"
 
+task :console do
+  sh "ruby -e \"require('./main.rb');binding.pry\"" # khe khe
+end
+
 namespace :fetch do
   task :timpul do
     TimpulFetcher.new.run
@@ -15,6 +19,10 @@ namespace :fetch do
 
   task :protv do
     ProTvFetcher.new.run
+  end
+
+  task :agora do
+    AgoraFetcher.new.run
   end
 end
 
