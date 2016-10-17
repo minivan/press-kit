@@ -22,6 +22,7 @@ require_relative "fetchers/timpul"
 require_relative "fetchers/unimedia"
 require_relative "fetchers/publika"
 require_relative "fetchers/pro_tv"
+require_relative "fetchers/agora"
 
 require_relative "parsers/timpul"
 require_relative "parsers/unimedia"
