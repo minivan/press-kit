@@ -39,7 +39,7 @@ private
     @most_recent_id ||= fetch_most_recent_id
   end
 
-  def ftech_most_recent_id
+  def fetch_most_recent_id
     doc = Nokogiri::XML(RestClient.get(FEED_URL))
     doc.css("link")[3].text.scan(/-([\d]+)\.html.+/).first.first.to_i
   end

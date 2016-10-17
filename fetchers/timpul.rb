@@ -39,7 +39,7 @@ private
     @most_recent_id ||= fetch_most_recent_id
   end
 
-  def ftech_most_recent_id
+  def fetch_most_recent_id
     doc = Nokogiri::HTML.parse(RestClient.get(MAIN_PAGE))
     hrefs = doc.css("a").map { |link| link["href"] }.compact
     possible_ids = hrefs.map { |href| href.scan(/-([\d]+)\.html/)[0] }.compact
