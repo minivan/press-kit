@@ -52,7 +52,7 @@ private
   end
 
   def fetch_single(id)
-    page = SmartFetcher.fetch(link(id), false)
+    page = SmartFetcher.fetch(link(id))
     save(page, id) if valid?(page)
   end
 

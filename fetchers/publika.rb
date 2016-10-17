@@ -60,7 +60,7 @@ private
   end
 
   def fetch_single(id)
-    page = SmartFetcher.fetch(link(id))
+    page = SmartFetcher.fetch_with_retry_on_socket_error(link(id))
     save(page, id) if valid?(page)
   end
 

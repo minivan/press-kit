@@ -50,7 +50,7 @@ private
     "http://unimedia.info/stiri/-#{id}.html"
   end
 
-  def valid? page
+  def valid?(page)
     return false unless page
     doc = Nokogiri::HTML(page, nil, 'UTF-8')
     return false if doc.title.match(/pagină nu există/)
@@ -59,7 +59,7 @@ private
   end
 
   def fetch_single(id)
-    page = SmartFetcher.fetch(link(id))
+    page = SmartFetcher.fetch_with_retry_on_socket_error(link(id))
     save(page, id) if valid?(page)
   end
 

@@ -53,11 +53,11 @@ private
   end
 
   def fetch_single(id)
-    page = SmartFetcher.fetch(link(id), false)
+    page = SmartFetcher.fetch(link(id))
     save(page, id) if valid?(page)
   end
 
-  def valid? page
+  def valid?(page)
     return unless page
     doc = Nokogiri::HTML(page, nil, 'UTF-8')
     return false if doc.title == "Timpul - Ştiri din Moldova"
