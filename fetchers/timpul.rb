@@ -4,33 +4,52 @@ class TimpulFetcher
   PAGES_DIR = "data/pages/timpul/"
   MAIN_PAGE = "http://www.timpul.md/"
 
-  def setup
-    FileUtils.mkdir_p PAGES_DIR
+  def initialize(storage=LocalStorage.new)
+    storage.setup PAGES_DIR
+    @storage = storage
   end
 
-  def most_recent_id
-    return @most_recent_id if @most_recent_id
-    doc = Nokogiri::HTML.parse(RestClient.get(MAIN_PAGE))
-    hrefs = doc.css("a").map { |link| link["href"] }.compact
-    possible_ids = hrefs.map { |href| href.scan(/-([\d]+)\.html/)[0] }.compact
-    @most_recent_id = possible_ids.map { |id| id.first.to_i }.max
+  def run
+    puts "Fetching Timpul. Most recent: #{most_recent_id}. Last fetched: #{latest_stored_id}."
+
+    if all_pages_are_fetched?
+      puts "Nothing to fetch for Timpul"
+      return
+    end
+
+    latest_stored_id.upto(most_recent_id) do |id|
+      fetch_single(id)
+      progressbar.increment!
+    end
+  end
+
+private
+
+  def all_pages_are_fetched?
+    latest_stored_id == most_recent_id
   end
 
   def latest_stored_id
-    Dir["#{PAGES_DIR}*"].map { |f| f.split('.').first.gsub(PAGES_DIR, "") }
-        .map(&:to_i)
-        .sort
-        .last || 0
+    @storage.latest_page_id
+  end
+
+  def save(page, id)
+    @storage.save(page, id)
+  end
+
+  def most_recent_id
+    @most_recent_id ||= fetch_most_recent_id
+  end
+
+  def ftech_most_recent_id
+    doc = Nokogiri::HTML.parse(RestClient.get(MAIN_PAGE))
+    hrefs = doc.css("a").map { |link| link["href"] }.compact
+    possible_ids = hrefs.map { |href| href.scan(/-([\d]+)\.html/)[0] }.compact
+    possible_ids.map { |id| id.first.to_i }.max
   end
 
   def link(id)
     "http://www.timpul.md/u_#{id}/"
-  end
-
-  def save(page, id)
-    Zlib::GzipWriter.open(PAGES_DIR + id.to_s + ".html.gz") do |gz|
-      gz.write page
-    end
   end
 
   def fetch_single(id)
@@ -49,20 +68,5 @@ class TimpulFetcher
 
   def progressbar
     @progressbar ||= ProgressBar.new(most_recent_id - latest_stored_id, :bar, :counter, :rate, :eta)
-  end
-
-  def run
-    setup
-    puts "Fetching Timpul. Most recent: #{most_recent_id}. Last fetched: #{latest_stored_id}."
-
-    if latest_stored_id == most_recent_id
-      puts "Nothing to fetch for Timpul"
-      return
-    end
-
-    latest_stored_id.upto(most_recent_id) do |id|
-      fetch_single(id)
-      progressbar.increment!
-    end
   end
 end

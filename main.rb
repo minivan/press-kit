@@ -18,6 +18,10 @@ require_relative "lib/batch_racai_fetcher"
 require_relative "lib/racai_builder"
 require_relative "analyzer"
 
+# fetcher helper classes
+require_relative "fetchers/local_storage"
+
+# fetcher implementations
 require_relative "fetchers/timpul"
 require_relative "fetchers/unimedia"
 require_relative "fetchers/publika"
