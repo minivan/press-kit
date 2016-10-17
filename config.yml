@@ -2,5 +2,5 @@ storage_dir:
   agora: "data/pages/agora/"
   pro_tv: "data/pages/protv/"
   publika: "data/pages/publika"
-  timpul: "data/pages/publika"
-  unimedia: "data/pages/publika"
+  timpul: "data/pages/timpul"
+  unimedia: "data/pages/unimedia"
