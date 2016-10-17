@@ -1,11 +1,9 @@
 require_relative "../main"
 
 class UnimediaFetcher
-  PAGES_DIR = "data/pages/unimedia/"
   FEED_URL = "http://unimedia.info/rss/news.xml"
 
-  def initialize(storage=LocalStorage.new)
-    storage.setup PAGES_DIR
+  def initialize(storage=LocalStorageFactory.unimedia)
     @storage = storage
   end
 
@@ -52,7 +50,7 @@ private
 
   def valid?(page)
     return false unless page
-    doc = Nokogiri::HTML(page, nil, 'UTF-8')
+    doc = Nokogiri::HTML(page, nil, "UTF-8")
     return false if doc.title.match(/pagină nu există/)
     return false if doc.title.match(/UNIMEDIA - Portalul de știri nr. 1 din Moldova/)
     true

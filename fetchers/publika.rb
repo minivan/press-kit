@@ -4,8 +4,7 @@ class PublikaFetcher
   PAGES_DIR = "data/pages/publika/"
   FEED_URL = "http://rss.publika.md/stiri.xml"
 
-  def initialize(storage=LocalStorage.new)
-    storage.setup PAGES_DIR
+  def initialize(storage=LocalStorageFactory.publika)
     @storage = storage
   end
 

@@ -6,9 +6,14 @@ require 'json'
 require 'i18n'
 require 'mongoid'
 require 'savon'
+require 'settingslogic'
 require_relative 'lib/config/database'
 
 Config::Database.setup
+
+class Settings < Settingslogic
+  source "./config.yml"
+end
 
 require_relative "lib/person"
 require_relative "lib/smart_fetcher"

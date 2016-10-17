@@ -1,12 +1,10 @@
 require_relative "../main"
 
 class ProTvFetcher
-  PAGES_DIR  = "data/pages/protv/"
   MAIN_PAGE = "http://protv.md"
   LATEST_NEWS = "http://protv.md/export/featured/json"
 
-  def initialize(storage=LocalStorage.new)
-    storage.setup PAGES_DIR
+  def initialize(storage=LocalStorageFactory.pro_tv)
     @storage = storage
   end
 

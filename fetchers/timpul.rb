@@ -1,11 +1,9 @@
 require_relative "../main"
 
 class TimpulFetcher
-  PAGES_DIR = "data/pages/timpul/"
   MAIN_PAGE = "http://www.timpul.md/"
 
-  def initialize(storage=LocalStorage.new)
-    storage.setup PAGES_DIR
+  def initialize(storage=LocalStorageFactory.timpul)
     @storage = storage
   end
 
@@ -59,9 +57,9 @@ private
 
   def valid?(page)
     return unless page
-    doc = Nokogiri::HTML(page, nil, 'UTF-8')
+    doc = Nokogiri::HTML(page, nil, "UTF-8")
     return false if doc.title == "Timpul - Ştiri din Moldova"
-    return false unless doc.css('.content').size > 0
+    return false unless doc.css(".content").size > 0
 
     true
   end

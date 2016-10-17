@@ -1,11 +1,9 @@
 require_relative "../main"
 
 class AgoraFetcher
-  PAGES_DIR = "data/pages/agora/"
   FEED_URL  = "http://agora.md/rss/news"
 
-  def initialize(storage=LocalStorage.new)
-    storage.setup PAGES_DIR
+  def initialize(storage=LocalStorageFactory.agora)
     @storage = storage
   end
 
@@ -53,8 +51,17 @@ private
     "http://agora.md/stiri/#{id}/"
   end
 
+  def valid?(page)
+    doc = Nokogiri::HTML(page, nil, "UTF-8")
+    doc.title != "Agora - 404"
+  end
+
   def fetch_single(id)
     page = SmartFetcher.fetch(link(id))
     save(page, id) if valid?(page)
+  end
+
+  def progressbar
+    @progressbar ||= ProgressBar.new(most_recent_id - latest_stored_id, :bar, :counter, :rate, :eta)
   end
 end

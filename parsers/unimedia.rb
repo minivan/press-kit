@@ -4,14 +4,14 @@ class UnimediaParser
   attr_accessor :page_dir, :parsed_data
 
   def latest_stored_id
-    @latest_stored_id = Dir["#{@page_dir}*"].map{ |f| f.split('.').first.gsub(@page_dir, "") }
+    @latest_stored_id = Dir["#{@page_dir}*"].map{ |f| f.split(".").first.gsub(@page_dir, "") }
                         .map(&:to_i)
                         .sort
                         .last || 0
   end
 
   def latest_parsed_id
-    ParsedPage.where(source: 'unimedia').desc(:article_id).limit(1).first.article_id
+    ParsedPage.where(source: "unimedia").desc(:article_id).limit(1).first.article_id
   rescue
     0
   end
@@ -35,14 +35,14 @@ class UnimediaParser
   end
 
   def parse(text, id)
-    doc = Nokogiri::HTML(text, nil, 'UTF-8')
+    doc = Nokogiri::HTML(text, nil, "UTF-8")
     if doc.title.match(/pagină nu există/) or doc.title.match(/UNIMEDIA - Portalul de știri nr. 1 din Moldova/)
       return
     end
 
-    title = doc.css('h1.bigtitlex2').first.text rescue doc.title
-    timestring, views, comments = doc.css('.left-container > .news-details > .white-v-separator').map(&:text)
-    content = doc.css('.news-text').text.gsub(/\r|\n/, ' ').squeeze(' ')
+    title = doc.css("h1.bigtitlex2").first.text rescue doc.title
+    timestring, views, comments = doc.css(".left-container > .news-details > .white-v-separator").map(&:text)
+    content = doc.css(".news-text").text.gsub(/\r|\n/, " ").squeeze(" ")
 
     {
       source:         "unimedia",
@@ -83,7 +83,7 @@ class UnimediaParser
         else
           puts "NO DATA"
         end
-      rescue Errno::ENOENT => err
+      rescue Errno::ENOENT
         puts "NOT SAVED TO DISK"
       end
     end
