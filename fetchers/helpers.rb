@@ -1,15 +1,17 @@
 module Fetchers
   module PagesWithIntegerIdInUrl
     def run
-      puts "Fetching #{self.class.name}. Most recent: #{most_recent_id}. Last fetched: #{latest_stored_id}."
+      class_name = self.class.name
+      puts "Fetching #{class_name}. Most recent: #{most_recent_id}. Last fetched: #{latest_stored_id}."
 
       if all_pages_are_fetched?
-        puts "Nothing to fetch for Timpul"
+        puts "Nothing to fetch for #{class_name}"
         return
       end
 
       latest_stored_id.upto(most_recent_id) do |id|
-        fetch_single(id)
+        page = fetch_single(id)
+        save(page, id)
         progressbar.increment!
       end
     end

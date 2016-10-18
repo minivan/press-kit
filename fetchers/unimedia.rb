@@ -21,17 +21,16 @@ module Fetchers
       "http://unimedia.info/stiri/-#{id}.html"
     end
 
+    def fetch_single(id)
+      SmartFetcher.fetch_with_retry_on_socket_error(link(id))
+    end
+
     def valid?(page)
       return false unless page
       doc = Nokogiri::HTML(page, nil, "UTF-8")
       return false if doc.title.match(/pagină nu există/)
       return false if doc.title.match(/UNIMEDIA - Portalul de știri nr. 1 din Moldova/)
       true
-    end
-
-    def fetch_single(id)
-      page = SmartFetcher.fetch_with_retry_on_socket_error(link(id))
-      save(page, id) if valid?(page)
     end
   end
 end

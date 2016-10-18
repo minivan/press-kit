@@ -27,13 +27,12 @@ module Fetchers
       "http://publika.md/#{id}"
     end
 
-    def valid?(page)
-      !page.nil? && page.include?("publicat in data de")
+    def fetch_single(id)
+      SmartFetcher.fetch_with_retry_on_socket_error(link(id))
     end
 
-    def fetch_single(id)
-      page = SmartFetcher.fetch_with_retry_on_socket_error(link(id))
-      save(page, id) if valid?(page)
+    def valid?(page)
+      !page.nil? && page.include?("publicat in data de")
     end
   end
 end

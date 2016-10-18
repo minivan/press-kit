@@ -24,13 +24,14 @@ module Fetchers
       "http://agora.md/stiri/#{id}/"
     end
 
-    def valid?(page)
-      doc = Nokogiri::HTML(page, nil, "UTF-8")
-      doc.title != "Agora - 404"
-    end
-
     def fetch_single(id)
       SmartFetcher.fetch(link(id))
+    end
+
+    def valid?(page)
+      return false if page.nil?
+      doc = Nokogiri::HTML(page, nil, "UTF-8")
+      doc.title != "Agora - 404"
     end
   end
 end

@@ -24,8 +24,7 @@ module Fetchers
     end
 
     def fetch_single(id)
-      page = SmartFetcher.fetch(link(id))
-      save(page, id) if valid?(page)
+      SmartFetcher.fetch(link(id))
     end
 
     def valid?(page)
