@@ -46,7 +46,7 @@ class PublikaParser
   end
 
   def parse(text, id)
-    doc = Nokogiri::HTML(text, nil, 'UTF-8')
+    doc = Nokogiri::HTML(text, nil, "UTF-8")
 
     return unless has_data?(doc)
 

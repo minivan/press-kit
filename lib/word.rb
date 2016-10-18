@@ -18,13 +18,13 @@ class Word
   index({ year: 1},      {name: "words_year_index"})
 
   def self.save_racai_word!(split_string, parsed_page)
-    word = Word.create!(source:       parsed_page.source,
-                        year:         parsed_page.datetime.year,
-                        month:        parsed_page.datetime.month,
-                        day:          parsed_page.datetime.day,
-                        racai_string: split_string.join("\t"),
-                        normalized:   split_string[2],
-                        pos:          split_string[1],
-                        parsed_page:  parsed_page)
+    Word.create!(source:       parsed_page.source,
+                 year:         parsed_page.datetime.year,
+                 month:        parsed_page.datetime.month,
+                 day:          parsed_page.datetime.day,
+                 racai_string: split_string.join("\t"),
+                 normalized:   split_string[2],
+                 pos:          split_string[1],
+                 parsed_page:  parsed_page)
   end
 end

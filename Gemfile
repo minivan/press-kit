@@ -10,6 +10,7 @@ source "https://rubygems.org" do
     gem 'savon'
     gem 'parallel'
     gem 'rake'
+    gem 'settingslogic'
   end
 
   group :test do

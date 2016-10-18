@@ -49,7 +49,7 @@ class TimpulParser
   end
 
   def parse(text, id)
-    doc = Nokogiri::HTML(text, nil, 'UTF-8')
+    doc = Nokogiri::HTML(text, nil, "UTF-8")
 
     return if doc.title == "Timpul - Ştiri din Moldova"
 

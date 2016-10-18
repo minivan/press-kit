@@ -12,9 +12,6 @@ run: analyze
 	sleep 1
 	(open http://localhost:8000/visualization)
 
-console:
-	ruby -e "require('./main.rb');binding.pry"
-
 racai: parse
 	ruby scripts/racai.rb
 

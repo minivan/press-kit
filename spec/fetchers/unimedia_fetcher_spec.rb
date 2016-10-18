@@ -1,6 +1,6 @@
 require_relative '../../fetchers/unimedia'
 
-describe UnimediaFetcher do
+describe Fetchers::Unimedia do
   it_behaves_like "a fetcher" do
     let(:fetcher) { subject }
 

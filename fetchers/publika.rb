@@ -1,66 +1,38 @@
 require_relative "../main"
 
-class PublikaFetcher
-  PAGES_DIR = "data/pages/publika/"
-  FEED_URL = "http://rss.publika.md/stiri.xml"
+module Fetchers
+  class Publika
+    include Fetchers::IncrementalStrategy
 
-  def setup
-    FileUtils.mkdir_p PAGES_DIR
-  end
+    PAGES_DIR = "data/pages/publika/"
+    FEED_URL = "http://rss.publika.md/stiri.xml"
 
-  def most_recent_id
-    return @most_recent_id if @most_recent_id
-    doc = Nokogiri::XML(RestClient.get(FEED_URL))
-    @most_recent_id = doc.css("link")[2]
-                          .text
-                          .scan(/_([\d]+)\.html/)
-                          .first
-                          .first
-                          .to_i
-  end
-
-  def latest_stored_id
-    Dir["#{PAGES_DIR}*"].map { |f| f.split('.').first.gsub(PAGES_DIR, "") }
-        .map(&:to_i)
-        .sort
-        .last || 0
-  end
-
-  def link(id)
-    "http://publika.md/#{id}"
-  end
-
-  def valid?(page)
-    !page.nil? && page.include?("publicat in data de")
-  end
-
-  def save(page, id)
-    Zlib::GzipWriter.open(PAGES_DIR + id.to_s + ".html.gz") do |gz|
-      gz.write page
-    end
-  end
-
-  def fetch_single(id)
-    page = SmartFetcher.fetch(link(id))
-    save(page, id) if valid?(page)
-  end
-
-  def progressbar
-    @progressbar ||= ProgressBar.new(most_recent_id - latest_stored_id, :bar, :counter, :rate, :eta)
-  end
-
-  def run
-    setup
-    puts "Fetching Publika. Most recent: #{most_recent_id}. Last fetched: #{latest_stored_id}."
-
-    if latest_stored_id == most_recent_id
-      puts "Nothing to fetch for Publika"
-      return
+    def initialize(storage=LocalStorageFactory.publika)
+      @storage = storage
     end
 
-    (latest_stored_id..most_recent_id).step(10) do |id|
-      fetch_single(id)
-      progressbar.increment!
+  private
+
+    def fetch_most_recent_id
+      doc = Nokogiri::XML(RestClient.get(FEED_URL))
+      doc.css("link")[2]
+        .text
+        .scan(/_([\d]+)\.html/)
+        .first
+        .first
+        .to_i
+    end
+
+    def link(id)
+      "http://publika.md/#{id}"
+    end
+
+    def fetch_single(id)
+      SmartFetcher.fetch_with_retry_on_socket_error(link(id))
+    end
+
+    def valid?(page)
+      !page.nil? && page.include?("publicat in data de")
     end
   end
 end
