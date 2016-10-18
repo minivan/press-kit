@@ -1,20 +1,21 @@
 shared_examples "a fetcher" do
   context "connect to the url", :vcr do
     describe "reading the page content" do
-      it "#valid" do
-        expect(fetcher).to receive(:save).exactly(3).times
-
-        valid_ids.each do |id|
-          fetcher.fetch_single(id)
-        end
+      before do
+        stub = double("increment!" => nil)
+        allow(fetcher).to receive(:progressbar).and_return(stub)
       end
 
-      it "#invalid" do
-        expect(fetcher).to receive(:save).exactly(0).times
+      it "is valid" do
+        allow(fetcher).to receive(:page_ids).and_return(valid_ids)
+        expect(fetcher).to receive(:save).exactly(valid_ids.size).times
+        fetcher.run
+      end
 
-        invalid_ids.each do |id|
-          fetcher.fetch_single(id)
-        end
+      it "is invalid" do
+        allow(fetcher).to receive(:page_ids).and_return(invalid_ids)
+        expect(fetcher).to receive(:save).exactly(0).times
+        fetcher.run
       end
     end
   end

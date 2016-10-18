@@ -2,7 +2,7 @@ class LocalStorage
   attr_reader :dir
 
   def initialize(dir)
-    dir = dir
+    @dir = dir
     create_directory_if_missing
   end
 

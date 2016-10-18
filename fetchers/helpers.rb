@@ -2,16 +2,16 @@ module Fetchers
   module IncrementalStrategy
     def run
       class_name = self.class.name
-      puts "Fetching #{class_name}. Most recent: #{most_recent_id}. Last fetched: #{latest_stored_id}."
+      puts "Fetching #{class_name}"
 
       if all_pages_are_fetched?
         puts "Nothing to fetch for #{class_name}"
         return
       end
 
-      latest_stored_id.upto(most_recent_id) do |id|
+      page_ids.each do |id|
         page = fetch_single(id)
-        save(page, id)
+        save(page, id) if valid?(page)
         progressbar.increment!
       end
     end
@@ -25,7 +25,7 @@ module Fetchers
     end
 
     def save(page, id)
-      @storage.save(page, id) if valid?(page)
+      @storage.save(page, id)
     end
 
     def most_recent_id

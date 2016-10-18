@@ -1,4 +1,4 @@
-require_relative '../../fetchers/unimedia'
+require_relative '../../main'
 
 describe Fetchers::Unimedia do
   it_behaves_like "a fetcher" do
