@@ -2,7 +2,7 @@ require_relative "../main"
 
 module Fetchers
   class Agora
-    include Fetchers::PagesWithIntegerIdsInUrl
+    include Fetchers::PagesWithIntegerIdInUrl
 
     FEED_URL  = "http://agora.md/rss/news"
 

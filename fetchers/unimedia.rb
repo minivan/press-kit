@@ -2,7 +2,7 @@ require_relative "../main"
 
 module Fetchers
   class Unimedia
-    include Fetchers::PagesWithIntegerIdsInUrl
+    include Fetchers::PagesWithIntegerIdInUrl
 
     FEED_URL = "http://unimedia.info/rss/news.xml"
 

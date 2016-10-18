@@ -1,5 +1,5 @@
 module Fetchers
-  module PagesWithIntegerIdsInUrl
+  module PagesWithIntegerIdInUrl
     def run
       puts "Fetching #{self.class.name}. Most recent: #{most_recent_id}. Last fetched: #{latest_stored_id}."
 

@@ -2,7 +2,7 @@ require_relative "../main"
 
 module Fetchers
   class ProTv
-    include Fetchers::PagesWithIntegerIdsInUrl
+    include Fetchers::PagesWithIntegerIdInUrl
 
     MAIN_PAGE = "http://protv.md"
     LATEST_NEWS = "http://protv.md/export/featured/json"
