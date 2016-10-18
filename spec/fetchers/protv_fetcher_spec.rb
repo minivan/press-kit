@@ -1,6 +1,6 @@
 require_relative '../../fetchers/pro_tv'
 
-describe ProTvFetcher do
+describe Fetchers::ProTv do
   let(:fetcher) { subject }
 
   it_behaves_like "a fetcher" do

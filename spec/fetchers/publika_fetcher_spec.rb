@@ -1,6 +1,6 @@
 require_relative '../../fetchers/publika'
 
-describe PublikaFetcher do
+describe Fetchers::Publika do
   let(:fetcher) { subject }
 
   it_behaves_like "a fetcher" do

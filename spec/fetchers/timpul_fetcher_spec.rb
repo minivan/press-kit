@@ -1,6 +1,6 @@
 require_relative '../../fetchers/timpul'
 
-describe TimpulFetcher do
+describe Fetchers::Timpul do
   it_behaves_like "a fetcher" do
     let(:fetcher) { subject }
 
