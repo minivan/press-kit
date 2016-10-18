@@ -11,7 +11,7 @@ describe Fetchers::ProTv do
   end
 
   context "latest article", :vcr do
-    it 'gets the latest stored id' do
+    it "gets the latest stored id" do
       expect(fetcher.most_recent_id).to be_kind_of Fixnum
     end
   end

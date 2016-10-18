@@ -12,34 +12,30 @@ class SmartFetcher
       execute_fetch(url)
     rescue SocketError
       puts "socket error: #{url}"
-      if retry_on_socket_error
-        sleep 60
-        puts "retry to fetch after socket error: #{url}"
-        retry
-      else
-        nil
-      end
+      sleep 60
+      puts "retry to fetch after socket error: #{url}"
+      retry
     end
 
   private
 
     def execute_fetch(url)
       RestClient.get url
-    rescue Errno::ETIMEDOUT => e
+    rescue Errno::ETIMEDOUT
       sleep 2
       puts "timeout: #{url}"
       retry
-    rescue Errno::ECONNREFUSED => e
+    rescue Errno::ECONNREFUSED
       sleep 30
       puts "refused: #{url}"
       retry
-    rescue RestClient::BadGateway => error
+    rescue RestClient::BadGateway
       sleep 2
       puts "bad gateway: #{url}"
       retry
-    rescue RestClient::Forbidden => error
+    rescue RestClient::Forbidden
       puts "forbidden: #{url}"
-    rescue URI::InvalidURIError => error
+    rescue URI::InvalidURIError
       puts "invalid uri: #{url}"
     rescue RestClient::ResourceNotFound
       puts "not found: #{url}"

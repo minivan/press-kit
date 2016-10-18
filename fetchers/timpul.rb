@@ -28,7 +28,7 @@ module Fetchers
     end
 
     def valid?(page)
-      return unless page
+      return false unless page
       doc = Nokogiri::HTML(page, nil, "UTF-8")
       return false if doc.title == "Timpul - Ştiri din Moldova"
       return false unless doc.css(".content").size > 0

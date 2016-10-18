@@ -17,7 +17,7 @@ class LocalStorage
 private
 
   def get_latest_page_id
-    Dir["#{@dir}*"].map{ |f| f.split('.').first.gsub(@dir, "") }
+    Dir["#{@dir}*"].map{ |f| f.split(".").first.gsub(@dir, "") }
         .map(&:to_i)
         .sort
         .last || 0

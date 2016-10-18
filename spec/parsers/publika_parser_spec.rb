@@ -13,11 +13,11 @@ describe PublikaParser do
 
   it_behaves_like "a parser"
 
-  it 'saves to the database' do
+  it "saves to the database" do
     doc = parser.load_doc(valid_ids[0])
     hash = parser.parse(doc, valid_ids[0])
     parser.save(hash)
 
-    expect(ParsedPage.where(source: 'publika', article_id: valid_ids[0])).not_to be nil
+    expect(ParsedPage.where(source: "publika", article_id: valid_ids[0])).not_to be nil
   end
 end
