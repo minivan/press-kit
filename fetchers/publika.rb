@@ -36,7 +36,7 @@ module Fetchers
     end
 
     def page_ids
-      start = 1 if latest_stored_id == 0
+      start = if latest_stored_id == 0 then 1 else latest_stored_id end
       (start..most_recent_id).step(10)
     end
   end
