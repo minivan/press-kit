@@ -26,6 +26,7 @@ require_relative "lib/racai_builder"
 require_relative "analyzer"
 
 # fetcher implementations
+require_relative "fetchers/helpers"
 require_relative "fetchers/timpul"
 require_relative "fetchers/unimedia"
 require_relative "fetchers/publika"

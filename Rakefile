@@ -22,7 +22,7 @@ namespace :fetch do
   end
 
   task :agora do
-    AgoraFetcher.new.run
+    Fetchers::Agora.new.run
   end
 end
 

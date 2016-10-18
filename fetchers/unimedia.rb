@@ -2,43 +2,15 @@ require_relative "../main"
 
 module Fetchers
   class Unimedia
+    include Fetchers::PagesWithIntegerIdsInUrl
+
     FEED_URL = "http://unimedia.info/rss/news.xml"
 
     def initialize(storage=LocalStorageFactory.unimedia)
       @storage = storage
     end
 
-    def run
-      puts "Fetching Unimedia. Most recent: #{most_recent_id}. Last fetched: #{latest_stored_id}."
-
-      if all_pages_are_fetched?
-        puts "Nothing to fetch for Unimedia"
-        return
-      end
-
-      latest_stored_id.upto(most_recent_id) do |id|
-        fetch_single(id)
-        progressbar.increment!
-      end
-    end
-
   private
-
-    def all_pages_are_fetched?
-      latest_stored_id == most_recent_id
-    end
-
-    def latest_stored_id
-      @storage.latest_page_id
-    end
-
-    def save(page, id)
-      @storage.save(page, id)
-    end
-
-    def most_recent_id
-      @most_recent_id ||= fetch_most_recent_id
-    end
 
     def fetch_most_recent_id
       doc = Nokogiri::XML(RestClient.get(FEED_URL))
@@ -60,10 +32,6 @@ module Fetchers
     def fetch_single(id)
       page = SmartFetcher.fetch_with_retry_on_socket_error(link(id))
       save(page, id) if valid?(page)
-    end
-
-    def progressbar
-      @progressbar ||= ProgressBar.new(most_recent_id - latest_stored_id, :bar, :counter, :rate, :eta)
     end
   end
 end

@@ -2,43 +2,15 @@ require_relative "../main"
 
 module Fetchers
   class Timpul
+    include Fetchers::PagesWithIntegerIdsInUrl
+
     MAIN_PAGE = "http://www.timpul.md/"
 
     def initialize(storage=LocalStorageFactory.timpul)
       @storage = storage
     end
 
-    def run
-      puts "Fetching Timpul. Most recent: #{most_recent_id}. Last fetched: #{latest_stored_id}."
-
-      if all_pages_are_fetched?
-        puts "Nothing to fetch for Timpul"
-        return
-      end
-
-      latest_stored_id.upto(most_recent_id) do |id|
-        fetch_single(id)
-        progressbar.increment!
-      end
-    end
-
   private
-
-    def all_pages_are_fetched?
-      latest_stored_id == most_recent_id
-    end
-
-    def latest_stored_id
-      @storage.latest_page_id
-    end
-
-    def save(page, id)
-      @storage.save(page, id)
-    end
-
-    def most_recent_id
-      @most_recent_id ||= fetch_most_recent_id
-    end
 
     def fetch_most_recent_id
       doc = Nokogiri::HTML.parse(RestClient.get(MAIN_PAGE))
@@ -63,10 +35,6 @@ module Fetchers
       return false unless doc.css(".content").size > 0
 
       true
-    end
-
-    def progressbar
-      @progressbar ||= ProgressBar.new(most_recent_id - latest_stored_id, :bar, :counter, :rate, :eta)
     end
   end
 end
