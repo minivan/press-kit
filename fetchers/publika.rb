@@ -2,7 +2,7 @@ require_relative "../main"
 
 module Fetchers
   class Publika
-    include Fetchers::PagesWithIntegerIdInUrl
+    include Fetchers::IncrementalStrategy
 
     PAGES_DIR = "data/pages/publika/"
     FEED_URL = "http://rss.publika.md/stiri.xml"

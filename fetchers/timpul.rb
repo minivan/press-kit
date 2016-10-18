@@ -2,7 +2,7 @@ require_relative "../main"
 
 module Fetchers
   class Timpul
-    include Fetchers::PagesWithIntegerIdInUrl
+    include Fetchers::IncrementalStrategy
 
     MAIN_PAGE = "http://www.timpul.md/"
 

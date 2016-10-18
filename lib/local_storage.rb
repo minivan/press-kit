@@ -1,6 +1,8 @@
 class LocalStorage
+  attr_reader :dir
+
   def initialize(dir)
-    @dir = dir
+    dir = dir
     create_directory_if_missing
   end
 
@@ -9,7 +11,7 @@ class LocalStorage
   end
 
   def save(page, id)
-    Zlib::GzipWriter.open(@dir + id.to_s + ".html.gz") do |gz|
+    Zlib::GzipWriter.open(dir + id.to_s + ".html.gz") do |gz|
       gz.write page
     end
   end
@@ -17,14 +19,14 @@ class LocalStorage
 private
 
   def get_latest_page_id
-    Dir["#{@dir}*"].map{ |f| f.split(".").first.gsub(@dir, "") }
+    Dir["#{dir}*"].map{ |f| f.split(".").first.gsub(dir, "") }
         .map(&:to_i)
         .sort
         .last || 0
   end
 
   def create_directory_if_missing
-    FileUtils.mkdir_p @dir
+    FileUtils.mkdir_p dir
   end
 end
 
