@@ -1,5 +1,6 @@
 Bundler.require :default, :test
 
+require_relative "../main"
 require "support/shared_examples"
 require "support/shared_context"
 

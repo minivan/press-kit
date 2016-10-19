@@ -1,8 +1,8 @@
-describe Fetchers::Unimedia do
+describe Fetchers::Agora do 
   it_behaves_like "a fetcher" do
     let(:fetcher) { subject }
 
-    let(:valid_ids) { %w(94985 94998 94983) }
+    let(:valid_ids) { %w(23575) }
 
     let(:invalid_ids) { %w(857438) }
   end

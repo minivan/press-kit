@@ -1,7 +1,5 @@
-require_relative '../../main'
-
 describe Fetchers::ProTv do
-  let(:fetcher) { Fetchers::ProTv.new }
+  let(:fetcher) { subject }
 
   it_behaves_like "a fetcher" do
 

@@ -1,5 +1,3 @@
-require_relative '../../fetchers/publika'
-
 describe Fetchers::Publika do
   let(:fetcher) { subject }
 

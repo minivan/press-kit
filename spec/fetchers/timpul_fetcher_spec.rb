@@ -1,5 +1,3 @@
-require_relative '../../main'
-
 describe Fetchers::Timpul do
   it_behaves_like "a fetcher" do
     let(:fetcher) { subject }
