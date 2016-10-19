@@ -26,11 +26,15 @@ module Fetchers
     end
 
     def valid?(page)
-      return false unless page
+      return false if page.nil?
       doc = Nokogiri::HTML(page, nil, "UTF-8")
       return false if doc.title.match(/pagină nu există/)
       return false if doc.title.match(/UNIMEDIA - Portalul de știri nr. 1 din Moldova/)
       true
+    end
+
+    def page_ids
+      latest_stored_id.upto(most_recent_id)
     end
   end
 end

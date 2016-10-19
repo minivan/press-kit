@@ -1,4 +1,4 @@
-require_relative '../../fetchers/timpul'
+require_relative '../../main'
 
 describe Fetchers::Timpul do
   it_behaves_like "a fetcher" do

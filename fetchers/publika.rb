@@ -34,5 +34,10 @@ module Fetchers
     def valid?(page)
       !page.nil? && page.include?("publicat in data de")
     end
+
+    def page_ids
+      start = if latest_stored_id == 0 then 1 else latest_stored_id end
+      (start..most_recent_id).step(10)
+    end
   end
 end
