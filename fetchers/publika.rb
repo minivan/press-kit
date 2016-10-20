@@ -2,7 +2,7 @@ require_relative "../main"
 
 module Fetchers
   class Publika
-    include Fetchers::IncrementalStrategy
+    include Helpers::IncrementalStrategy
 
     PAGES_DIR = "data/pages/publika/"
     FEED_URL = "http://rss.publika.md/stiri.xml"
@@ -36,7 +36,7 @@ module Fetchers
     end
 
     def page_ids
-      start = if latest_stored_id == 0 then 1 else latest_stored_id end
+      start = latest_stored_id == 0 ? 1 : latest_stored_id
       (start..most_recent_id).step(10)
     end
   end

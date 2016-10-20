@@ -1,4 +1,4 @@
-module Fetchers
+module Helpers
   module IncrementalStrategy
     def run
       class_name = self.class.name

@@ -26,7 +26,7 @@ require_relative "lib/racai_builder"
 require_relative "analyzer"
 
 # fetcher implementations
-require_relative "fetchers/helpers"
+require_relative "fetchers/helpers/incremental_strategy"
 require_relative "fetchers/timpul"
 require_relative "fetchers/unimedia"
 require_relative "fetchers/publika"
@@ -36,3 +36,4 @@ require_relative "fetchers/agora"
 require_relative "parsers/timpul"
 require_relative "parsers/unimedia"
 require_relative "parsers/publika"
+require_relative "parsers/protv"
