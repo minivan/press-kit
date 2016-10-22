@@ -27,6 +27,10 @@ namespace :fetch do
 end
 
 namespace :parse do
+  task :protv do
+    Parsers::ProTV.new.run
+  end
+
   task :timpul do
     TimpulParser.new.run
   end
