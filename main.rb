@@ -22,17 +22,20 @@ require_relative "lib/smart_fetcher"
 require_relative "lib/parsed_page"
 require_relative "lib/word"
 require_relative "lib/batch_racai_fetcher"
+require_relative "lib/url"
 require_relative "lib/racai_builder"
 require_relative "analyzer"
 
 # fetcher implementations
-require_relative "fetchers/helpers/incremental_strategy"
+require_relative "fetchers/strategy/incremental"
 require_relative "fetchers/timpul"
 require_relative "fetchers/unimedia"
 require_relative "fetchers/publika"
-require_relative "fetchers/pro_tv"
+require_relative "fetchers/protv"
 require_relative "fetchers/agora"
 
+# parser implementation
+require_relative "parsers/strategy/incremental"
 require_relative "parsers/timpul"
 require_relative "parsers/unimedia"
 require_relative "parsers/publika"

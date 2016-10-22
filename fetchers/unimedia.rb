@@ -1,13 +1,13 @@
-require_relative "../main"
-
 module Fetchers
   class Unimedia
-    include Helpers::IncrementalStrategy
+    include Strategy::Incremental
+    attr_reader :url, :storage
 
     FEED_URL = "http://unimedia.info/rss/news.xml"
 
-    def initialize(storage=LocalStorageFactory.unimedia)
+    def initialize(storage: LocalStorageFactory.unimedia, url: URL::Unimedia.new)
       @storage = storage
+      @url = url
     end
 
   private
@@ -17,12 +17,8 @@ module Fetchers
       doc.css("link")[3].text.scan(/-([\d]+)\.html.+/).first.first.to_i
     end
 
-    def link(id)
-      "http://unimedia.info/stiri/-#{id}.html"
-    end
-
     def fetch_single(id)
-      SmartFetcher.fetch_with_retry_on_socket_error(link(id))
+      SmartFetcher.fetch_with_retry_on_socket_error(build_url(id))
     end
 
     def valid?(page)

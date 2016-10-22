@@ -28,7 +28,7 @@ end
 
 namespace :parse do
   task :protv do
-    Parsers::ProTV.new.run
+    Parsers::ProTv.new.run
   end
 
   task :timpul do

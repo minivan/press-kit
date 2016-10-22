@@ -1,13 +1,13 @@
-require_relative "../main"
-
 module Fetchers
   class Agora
-    include Helpers::IncrementalStrategy
+    include Strategy::Incremental
+    attr_reader :url, :storage
 
     FEED_URL  = "http://agora.md/rss/news"
 
-    def initialize(storage=LocalStorageFactory.agora)
+    def initialize(storage: LocalStorageFactory.agora, url: URL::Agora.new)
       @storage = storage
+      @url = url
     end
 
   private
@@ -20,12 +20,8 @@ module Fetchers
         .to_i
     end
 
-    def link(id)
-      "http://agora.md/stiri/#{id}/"
-    end
-
     def fetch_single(id)
-      SmartFetcher.fetch(link(id))
+      SmartFetcher.fetch(build_url(id))
     end
 
     def valid?(page)

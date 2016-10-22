@@ -1,6 +1,6 @@
 require_relative '../../parsers/protv'
 
-describe Parsers::ProTV do
+describe Parsers::ProTv do
   it_behaves_like "a parser" do
     let(:parser) { described_class.new }
 

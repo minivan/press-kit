@@ -1,14 +1,13 @@
-require_relative "../main"
-
 module Fetchers
   class ProTv
-    include Helpers::IncrementalStrategy
+    include Strategy::Incremental
+    attr_reader :url, :storage
 
-    MAIN_PAGE = "http://protv.md"
     LATEST_NEWS = "http://protv.md/export/featured/json"
 
-    def initialize(storage=LocalStorageFactory.pro_tv)
+    def initialize(storage: LocalStorageFactory.pro_tv, url: URL::ProTv.new)
       @storage = storage
+      @url = url
     end
 
   private
@@ -18,12 +17,8 @@ module Fetchers
       resp[0]["id"].to_i
     end
 
-    def link(id)
-      "#{MAIN_PAGE}/stiri/actualitate/---#{id}.html"
-    end
-
     def fetch_single(id)
-      SmartFetcher.fetch(link(id))
+      SmartFetcher.fetch(build_url(id))
     end
 
     def valid?(page)
@@ -34,7 +29,8 @@ module Fetchers
     end
 
     def page_ids
-      latest_stored_id.upto(most_recent_id)
+      start = latest_stored_id == 0 ? 1 : latest_stored_id
+      (start..most_recent_id).step(10)
     end
   end
 end

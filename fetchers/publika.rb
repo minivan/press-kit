@@ -1,14 +1,13 @@
-require_relative "../main"
-
 module Fetchers
   class Publika
-    include Helpers::IncrementalStrategy
+    include Strategy::Incremental
+    attr_reader :url, :storage
 
-    PAGES_DIR = "data/pages/publika/"
     FEED_URL = "http://rss.publika.md/stiri.xml"
 
-    def initialize(storage=LocalStorageFactory.publika)
+    def initialize(storage: LocalStorageFactory.publika, url: URL::Publika.new)
       @storage = storage
+      @url = url
     end
 
   private
@@ -23,12 +22,8 @@ module Fetchers
         .to_i
     end
 
-    def link(id)
-      "http://publika.md/#{id}"
-    end
-
     def fetch_single(id)
-      SmartFetcher.fetch_with_retry_on_socket_error(link(id))
+      SmartFetcher.fetch_with_retry_on_socket_error(build_url(id))
     end
 
     def valid?(page)
