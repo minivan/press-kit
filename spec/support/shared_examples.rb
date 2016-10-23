@@ -22,6 +22,8 @@ shared_examples "a fetcher" do
 end
 
 shared_examples "a parser" do
+  let(:parser) { described_class.new(storage: storage) }
+
   context "reading the data" do
     it "has data" do
       valid_ids.each do |id|

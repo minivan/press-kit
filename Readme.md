@@ -26,7 +26,7 @@ Ex. `rake fetch:publika` or `rake parse:unimedia`
 
 Currently in stock:
 
-- ProTV
+- ProTv
 - Unimedia
 - Publika
 - Timpul

@@ -16,6 +16,10 @@ class LocalStorage
     end
   end
 
+  def load_doc(id)
+    Zlib::GzipReader.open("#{dir}#{id}.html.gz") { |gz| gz.read }
+  end
+
 private
 
   def get_latest_page_id

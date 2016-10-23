@@ -28,19 +28,19 @@ end
 
 namespace :parse do
   task :protv do
-    Parsers::ProTV.new.run
+    Parsers::ProTv.new.run
   end
 
   task :timpul do
-    TimpulParser.new.run
+    Parsers::Timpul.new.run
   end
 
   task :publika do
-    PublikaParser.new.run
+    Parsers::Publika.new.run
   end
 
   task :unimedia do
-    UnimediaParser.new.run
+    Parsers::Unimedia.new.run
   end
 end
 

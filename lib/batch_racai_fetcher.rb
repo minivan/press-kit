@@ -1,5 +1,3 @@
-require_relative '../main'
-
 class BatchRacaiFetcher
   def self.process!(articles)
     builder = RacaiBuilder.new(articles)

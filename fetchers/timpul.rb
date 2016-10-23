@@ -1,30 +1,25 @@
-require_relative "../main"
-
 module Fetchers
   class Timpul
-    include Helpers::IncrementalStrategy
+    include Strategy::Incremental
+    attr_reader :url, :storage
 
-    MAIN_PAGE = "http://www.timpul.md/"
-
-    def initialize(storage=LocalStorageFactory.timpul)
+    def initialize(storage: LocalStorageFactory.timpul, url: URL::Timpul.new)
       @storage = storage
+      @url = url
     end
 
   private
 
     def fetch_most_recent_id
-      doc = Nokogiri::HTML.parse(RestClient.get(MAIN_PAGE))
+      html = RestClient.get(url.base)
+      doc = Nokogiri::HTML.parse(html)
       hrefs = doc.css("a").map { |link| link["href"] }.compact
       possible_ids = hrefs.map { |href| href.scan(/-([\d]+)\.html/)[0] }.compact
       possible_ids.map { |id| id.first.to_i }.max
     end
 
-    def link(id)
-      "http://www.timpul.md/u_#{id}/"
-    end
-
     def fetch_single(id)
-      SmartFetcher.fetch(link(id))
+      SmartFetcher.fetch(build_url(id))
     end
 
     def valid?(page)
