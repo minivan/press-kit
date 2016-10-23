@@ -31,7 +31,7 @@ module URL
     end
 
     def build(id)
-      "#{base}/#{id}/"
+      "#{base}/#{id}"
     end
   end
 

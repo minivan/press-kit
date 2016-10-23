@@ -32,15 +32,15 @@ namespace :parse do
   end
 
   task :timpul do
-    TimpulParser.new.run
+    Parsers::Timpul.new.run
   end
 
   task :publika do
-    PublikaParser.new.run
+    Parsers::Publika.new.run
   end
 
   task :unimedia do
-    UnimediaParser.new.run
+    Parsers::Unimedia.new.run
   end
 end
 

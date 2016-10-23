@@ -42,7 +42,7 @@ module Parsers
 
 
     def cannot_be_parsed?(doc)
-      wrong_title?(doc) || empty_content(doc)
+      wrong_title?(doc) || empty_content?(doc)
     end
 
     def extract_content_from_sanitized_doc(doc)
