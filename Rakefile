@@ -42,6 +42,10 @@ namespace :parse do
   task :unimedia do
     Parsers::Unimedia.new.run
   end
+
+  task :agora do
+    Parsers::Agora.new.run
+  end
 end
 
 namespace :watch do
