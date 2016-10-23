@@ -13,11 +13,12 @@ module Parsers
     def parse(html, id)
       doc = Nokogiri::HTML(html, nil, "UTF-8")
 
+      return if cannot_be_parsed?(doc)
+
       date_time = extract_date_time(doc)
       title = doc.css("h1.post-title").text.strip
       views = doc.css("ul.entry-meta.post-meta li:nth-child(3)").text.strip.to_i rescue 0
       content = extract_content(doc)
-      binding.pry
       {
         source: source,
         title: title,
@@ -31,15 +32,21 @@ module Parsers
       }
     end
 
+    def cannot_be_parsed?(doc)
+      !doc.at_css("h1.post-title")
+    end
+
     def extract_content(doc)
       content_doc = doc.css(".post-content")
       content_doc.search("//script").remove
-      content_doc.text.strip
+      content_doc.text.strip.gsub("\n", " ")
     end
 
     def extract_date_time(doc)
-      date = doc.css("ul.entry-meta.post-meta li:nth-child(1)").text.strip
-      time = doc.css("ul.entry-meta.post-meta li:nth-child(2)").text.strip
+      date_doc = doc.css("ul.entry-meta.post-meta")
+      date_doc.search("li[@itemprop='author']").remove
+      date = date_doc.css("li:nth-child(1)").text.strip
+      time = date_doc.css("li:nth-child(2)").text.strip
       date + " " + time
     end
 

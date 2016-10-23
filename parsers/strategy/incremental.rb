@@ -34,7 +34,7 @@ module Parsers
       def run
         (latest_parsed_id+1..latest_stored_id).each do |id|
           begin
-            puts "\nT#{self.class.name}: #{progress(id)}"
+            puts "\n#{self.class.name}: #{progress(id)}"
             html = load_doc(id)
             hash = parse(html, id)
 
