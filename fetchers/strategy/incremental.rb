@@ -22,7 +22,7 @@ module Fetchers
       end
 
       def all_pages_are_fetched?
-        latest_stored_id == most_recent_id
+        latest_stored_id >= most_recent_id
       end
 
       def latest_stored_id
