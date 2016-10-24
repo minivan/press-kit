@@ -17,12 +17,16 @@ module Fetchers
         end
       end
 
+      def page_ids
+        latest_stored_id.upto(most_recent_id)
+      end
+
       def build_url(id)
         url.build(id)
       end
 
       def all_pages_are_fetched?
-        latest_stored_id == most_recent_id
+        latest_stored_id >= most_recent_id
       end
 
       def latest_stored_id

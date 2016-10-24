@@ -30,9 +30,5 @@ module Fetchers
 
       true
     end
-
-    def page_ids
-      latest_stored_id.upto(most_recent_id)
-    end
   end
 end

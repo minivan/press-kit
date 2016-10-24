@@ -28,9 +28,5 @@ module Fetchers
       return false if doc.title.match(/UNIMEDIA - Portalul de știri nr. 1 din Moldova/)
       true
     end
-
-    def page_ids
-      latest_stored_id.upto(most_recent_id)
-    end
   end
 end
