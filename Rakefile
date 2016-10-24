@@ -24,6 +24,10 @@ namespace :fetch do
   task :agora do
     Fetchers::Agora.new.run
   end
+
+  task :prime do
+    Fetchers::Prime.new.run
+  end
 end
 
 namespace :parse do

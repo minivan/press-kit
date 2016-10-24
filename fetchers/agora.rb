@@ -29,9 +29,5 @@ module Fetchers
       doc = Nokogiri::HTML(page, nil, "UTF-8")
       doc.title != "Agora - 404"
     end
-
-    def page_ids
-      latest_stored_id.upto(most_recent_id)
-    end
   end
 end

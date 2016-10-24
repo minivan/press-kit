@@ -53,6 +53,10 @@ module URL
     def initialize
       @base = "http://unimedia.info"
     end
+
+    def build(id)
+      "#{base}/stiri/-#{id}.html"
+    end
   end
 
   class Prime
