@@ -17,9 +17,9 @@ module Fetchers
         end
       end
 
-			def page_ids
-				latest_stored_id.upto(most_recent_id)
-			end
+      def page_ids
+        latest_stored_id.upto(most_recent_id)
+      end
 
       def build_url(id)
         url.build(id)

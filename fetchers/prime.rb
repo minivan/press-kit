@@ -10,12 +10,12 @@ module Fetchers
 
     def run
       puts "Fetching Prime"
-			if all_pages_are_fetched?
-				puts "Nothing to fetch for Prime"
-				return
-			end
+      if all_pages_are_fetched?
+        puts "Nothing to fetch for Prime"
+        return
+      end
 
-			page_ids.each do |id|
+      page_ids.each do |id|
         result = fetch_single(id)
         unless result[:page].nil?
           storage.save(result[:page], id, result[:category])
